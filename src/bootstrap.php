@@ -6,23 +6,12 @@ use GuzzleHttp\Psr7\Utils;
 use HttpSoft\Emitter\SapiEmitter; 
 use League\Route\Router; 
 
-
-
 ini_set("display_errors", 1); 
-
-
-
 
 require dirname(__DIR__) . "/vendor/autoload.php"; 
 
 
-
-
 $request = ServerRequest::fromGlobals(); 
-
-
-
-
 
 $router = new Router;
 
@@ -50,13 +39,7 @@ $response = $response->withBody($stream);
 return $response;
 });
 
-
-
-
-
-
-
-
+$response = $router->dispatch($request);
 $emitter = new SapiEmitter();
 $emitter->emit($response); 
 
