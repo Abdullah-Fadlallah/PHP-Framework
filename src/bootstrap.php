@@ -4,6 +4,7 @@ use GuzzleHttp\Psr7\ServerRequest;
 use GuzzleHttp\Psr7\Response; 
 use GuzzleHttp\Psr7\Utils; 
 use HttpSoft\Emitter\SapiEmitter; 
+use League\Route\Router; 
 
 
 
@@ -22,62 +23,33 @@ $request = ServerRequest::fromGlobals();
 
 
 
-$path = $request->getUri()->getPath() ; 
 
+$router = new Router;
 
-$page = match ($path) {
-    "/"     => "home",
-    "/home" => "home"
-};
+$router->map('GET', '/', function () {
 
-
-
-
-
-
-
-ob_start();
-
-
-
-
-require dirname(__DIR__)  . "/public/{$page}.php";
-
-
-
-
-
-$content = ob_get_clean();
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-$stream = Utils::streamFor($content);
-
-
-
-
+$stream = Utils::streamFor("home page");
 
 $response = new Response();
 
+$response = $response->withBody($stream);
+
+return $response;
+});
 
 
+$router->get('/product/{id:number}', function ($request, $args) {
 
+$id = $args['id'];
+$stream = Utils::streamFor("product id: $id");
 
+$response = new Response();
 
-$response = $response->withStatus(418) 
-                    ->withHeader("X-Powered-By","PHP")                                                                            
-                    ->withBody($stream);
+$response = $response->withBody($stream);
+
+return $response;
+});
+
 
 
 
@@ -87,7 +59,6 @@ $response = $response->withStatus(418)
 
 $emitter = new SapiEmitter();
 $emitter->emit($response); 
-
 
 
 
