@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Controllers;
+namespace app\Controllers;
 
 use GuzzleHttp\Psr7\Utils;
 use GuzzleHttp\Psr7\Response;
