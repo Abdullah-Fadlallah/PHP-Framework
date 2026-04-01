@@ -17,13 +17,11 @@ $router = new Router;
 
 $router->map('GET', '/', function () {
 
-$stream = Utils::streamFor("home page");
+require dirname(__DIR__) . "/src/Controllers/HomeController.php";
 
-$response = new Response();
+$controller = new App\Controllers\HomeController();
 
-$response = $response->withBody($stream);
-
-return $response;
+return $controller->index();
 });
 
 
